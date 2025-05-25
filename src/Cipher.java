@@ -42,4 +42,8 @@ public class Cipher {
         }
         return result.toString();
     }
+
+    public static String bruteForce (String text) {
+
+    }
 }

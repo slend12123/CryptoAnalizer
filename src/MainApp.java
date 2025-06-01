@@ -42,7 +42,7 @@ public class MainApp extends Application {
         outputArea.setEditable(false);
 
 
-        Button chooseOutputFileButton = new Button("Choose output file");
+        Button saveFileButton = new Button("Choose output file");
 
 
         chooseFileButton.setOnAction(event -> {
@@ -59,6 +59,7 @@ public class MainApp extends Application {
                 String text = Files.readString(inputFile.toPath());
                 String result = Cipher.encrypt(text, shift);
                 outputArea.setText(result);
+
             } catch (IOException e) {
                 outputArea.setText("You must choose a file");
             } catch (NumberFormatException e) {
@@ -91,6 +92,23 @@ public class MainApp extends Application {
             }
         });
 
+        saveFileButton.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save file");
+            fileChooser.setInitialFileName("result.txt");
+            File file = fileChooser.showSaveDialog(primaryStage);
+
+            if (file != null) {
+                try {
+                    String text = outputArea.getText();
+                    Files.write(Path.of(file.getAbsolutePath()), text.getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        });
+
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
@@ -103,7 +121,7 @@ public class MainApp extends Application {
                 decryptButton,
                 bruteForceButton,
                 outputArea,
-                chooseOutputFileButton
+                saveFileButton
         );
 
         Scene scene = new Scene(layout, 800, 800);

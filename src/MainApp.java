@@ -14,7 +14,6 @@ import java.nio.file.Path;
 public class MainApp extends Application {
 
     private File inputFile;
-    private File outputFile;
 
     public static void main(String[] args) {
         launch(args);
@@ -60,7 +59,7 @@ public class MainApp extends Application {
                 String result = Cipher.encrypt(text, shift);
                 outputArea.setText(result);
 
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 outputArea.setText("You must choose a file");
             } catch (NumberFormatException e) {
                 outputArea.setText("Shift must be a number");
@@ -73,7 +72,7 @@ public class MainApp extends Application {
                 String text = Files.readString(inputFile.toPath());
                 String result = Cipher.decrypt(text, shift);
                 outputArea.setText(result);
-            } catch (IOException e) {
+            } catch (NullPointerException | IOException e) {
                 outputArea.setText("You must choose a file");
             } catch (NumberFormatException e){
                 outputArea.setText("Shift must be a number");
@@ -85,10 +84,8 @@ public class MainApp extends Application {
                 String text = Files.readString(inputFile.toPath());
                 String result = Cipher.bruteForce(text);
                 outputArea.setText(result);
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 outputArea.setText("You must choose a file");
-            } catch (NumberFormatException e){
-                outputArea.setText("Shift must be a number");
             }
         });
 
